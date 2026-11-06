@@ -204,8 +204,75 @@ open class FenixApplication : Application(), Provider, ThemeProvider {
     protected val ioDispatcher = Dispatchers.IO
 
     override fun onCreate() {
+        // Iceraven fork DIAGNOSTIC (#10 still crashes on launch, 2026-11-06):
+        // install a crash catcher FIRST, before anything else, that writes the
+        // real stack trace to Downloads/iceraven-crash-<ts>.txt so the user can
+        // send it back. Chains to the previous handler afterwards.
+        installCrashCatcher()
         super.onCreate()
         initializeFenixProcess()
+    }
+
+    /**
+     * Writes any uncaught exception (any thread) to a plain-text file in the
+     * public Downloads folder, then lets the previous handler run as normal.
+     * Keep this tiny and dependency-free: it runs while the process is dying.
+     */
+    private fun installCrashCatcher() {
+        val previous = Thread.getDefaultUncaughtExceptionHandler()
+        Thread.setDefaultUncaughtExceptionHandler { thread, throwable ->
+            try {
+                val ts = java.text.SimpleDateFormat(
+                    "yyyyMMdd-HHmmss",
+                    java.util.Locale.US,
+                ).format(java.util.Date())
+                val writer = java.io.StringWriter()
+                writer.append("Iceraven crash log\n")
+                writer.append("time: ").append(ts).append("\n")
+                writer.append("process: ")
+                    .append(android.app.Application.getProcessName()).append("\n")
+                writer.append("thread: ").append(thread.name).append("\n")
+                writer.append("exception: ")
+                    .append(throwable.toString()).append("\n")
+                throwable.printStackTrace(java.io.PrintWriter(writer))
+                val text = writer.toString()
+                // Primary: public Downloads, user can find and share it.
+                try {
+                    val values = android.content.ContentValues().apply {
+                        put(
+                            android.provider.MediaStore.MediaColumns.DISPLAY_NAME,
+                            "iceraven-crash-$ts.txt",
+                        )
+                        put(
+                            android.provider.MediaStore.MediaColumns.MIME_TYPE,
+                            "text/plain",
+                        )
+                        put(
+                            android.provider.MediaStore.MediaColumns.RELATIVE_PATH,
+                            android.os.Environment.DIRECTORY_DOWNLOADS,
+                        )
+                    }
+                    val uri = contentResolver.insert(
+                        android.provider.MediaStore.Downloads.EXTERNAL_CONTENT_URI,
+                        values,
+                    )
+                    if (uri != null) {
+                        contentResolver.openOutputStream(uri)?.use { out ->
+                            out.write(text.toByteArray())
+                        }
+                    }
+                } catch (_: Exception) {
+                    // Fallback: app-private files dir.
+                    try {
+                        java.io.File(filesDir, "iceraven-crash-$ts.txt")
+                            .writeText(text)
+                    } catch (_: Exception) {
+                    }
+                }
+            } catch (_: Exception) {
+            }
+            previous?.uncaughtException(thread, throwable)
+        }
     }
 
     override fun attachBaseContext(base: Context) {
