@@ -948,6 +948,10 @@
             android:name=".aisearch.AiSearchActivity"
             android:exported="false"
             android:label="AI 搜索" />
+        <activity
+            android:name=".news.NewsFeedActivity"
+            android:exported="false"
+            android:label="新闻资讯" />
     </application>
 
 </manifest>

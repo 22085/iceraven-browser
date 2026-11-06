@@ -235,6 +235,11 @@
         app:iconSpaceReserved="false"
         android:layout="@layout/preference_category_no_icon_style">
         <androidx.preference.Preference
+            android:key="@string/pref_key_news_feed"
+            app:iconSpaceReserved="false"
+            android:title="@string/preferences_news_feed" />
+
+        <androidx.preference.Preference
             android:key="@string/pref_key_ai_search"
             app:iconSpaceReserved="false"
             android:title="@string/preferences_ai_search" />

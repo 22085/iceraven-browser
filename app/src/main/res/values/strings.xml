@@ -766,6 +766,8 @@
     <string name="pref_key_ai_search">pref_key_ai_search</string>
     <string name="preferences_cert_tool">证书工具</string>
     <string name="preferences_ai_search">AI 搜索</string>
+    <string name="pref_key_news_feed">pref_key_news_feed</string>
+    <string name="preferences_news_feed">新闻资讯</string>
     <!-- Preference for settings related to changing the default browser -->
     <string name="preferences_set_as_default_browser">Set as default browser</string>
     <!-- Preference category for advanced settings -->
