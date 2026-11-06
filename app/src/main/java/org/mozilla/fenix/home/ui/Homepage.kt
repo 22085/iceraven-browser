@@ -230,6 +230,10 @@ internal fun Homepage(
                                 )
                             }
 
+                            // Iceraven: news feed with in-feed native ads on the homepage,
+                            // right after shortcuts. Fail-open: hidden when the feed fails.
+                            HomeNewsSection()
+
                             if (showPrivacyReport) {
                                 TrackersBlockedCard(
                                     trackersBlockedCount = trackersBlockedCount,
