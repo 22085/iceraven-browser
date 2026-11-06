@@ -473,6 +473,21 @@ open class HomeActivity : LocaleAwareAppCompatActivity(), NavHostActivity, Crash
         // DO NOT MOVE ANYTHING ABOVE THIS getProfilerTime CALL.
         val startTimeProfiler = components.core.engine.profiler?.getProfilerTime()
 
+        // Iceraven fork: EdgeToEdgeFragmentLifecycleCallbacks.register() must run
+        // before setContentView, and it throws IllegalStateException when the
+        // content view already has a child (crash in #7/#8/#10/#11: "register()
+        // must be called before Activity.setContentView()"). It used to run after
+        // super.onCreate(), by which point the content view was already non-empty
+        // on this device. Moving it here (before super.onCreate, decor not yet
+        // created) makes the check pass, and the try/catch guarantees a failed
+        // check can never crash startup again (only edge-to-edge callbacks lost).
+        try {
+            EdgeToEdgeFragmentLifecycleCallbacks.register(supportFragmentManager, window)
+        } catch (e: Exception) {
+            // Non-fatal: edge-to-edge per-fragment callbacks are skipped.
+            android.util.Log.w("HomeActivity", "edge-to-edge register failed, skipped: ${e.message}")
+        }
+
         components.strictMode.attachListenerToDisablePenaltyDeath(supportFragmentManager)
         MarkersFragmentLifecycleCallbacks.register(supportFragmentManager, components.core.engine)
 
@@ -484,11 +499,6 @@ open class HomeActivity : LocaleAwareAppCompatActivity(), NavHostActivity, Crash
 
             super.onCreate(savedInstanceState)
         }
-
-        // Must run after the edge-to-edge capable theme is applied by
-        // `setupTheme` (or installSplashScreen). It must also be run before
-        // the `setContent` starts attaching fragments.
-        EdgeToEdgeFragmentLifecycleCallbacks.register(supportFragmentManager, window)
 
         // Checks if Activity is currently in PiP mode if launched from external intents, then exits it
         checkAndExitPiP()
