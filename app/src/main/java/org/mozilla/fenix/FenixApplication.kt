@@ -265,8 +265,9 @@ open class FenixApplication : Application(), Provider, ThemeProvider {
             // every process (Gecko child processes, crash reporter, ...). Calling
             // MobileAds.initialize there crashed startup on run #7 — the app showed
             // "Iceraven 需要重新启动" immediately on launch.
-            GoogleSdk.initialize(this)
-            AdsManager.install(this)
+            // BISECT (#3 works, #8 crashes): AdMob fully disabled in this build.
+            // GoogleSdk.initialize(this)
+            // AdsManager.install(this)
 
             // Start loading the SharedPreferences file from disk on a background thread immediately.
             applicationScope.launch(IO) {

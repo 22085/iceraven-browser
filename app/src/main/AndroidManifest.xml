@@ -84,6 +84,15 @@
             android:shell="true"
             tools:targetApi="29" />
 
+        <!-- Iceraven fork BISECT (#3 works, #8 crashes): the AdMob SDK auto-inits
+             via MobileAdsInitProvider in EVERY process (incl. Gecko children) before
+             Application.onCreate, which #8's main-process fix could not stop.
+             Remove it so the SDK stays fully inert in this build. -->
+        <provider
+            android:name="com.google.android.gms.ads.MobileAdsInitProvider"
+            android:authorities="${applicationId}.mobileadsinitprovider"
+            tools:node="remove" />
+
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-3940256099942544~3347511713" />
