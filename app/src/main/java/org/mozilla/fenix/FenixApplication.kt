@@ -116,8 +116,6 @@ import org.mozilla.fenix.autofill.AutofillService
 import org.mozilla.fenix.components.Components
 import org.mozilla.fenix.components.Core
 import org.mozilla.fenix.components.appstate.AppAction
-import org.mozilla.fenix.ads.AdsManager
-import org.mozilla.fenix.ads.GoogleSdk
 import org.mozilla.fenix.components.initializeGlean
 import org.mozilla.fenix.components.metrics.MozillaProductDetector
 import org.mozilla.fenix.components.startMetricsIfEnabled
@@ -327,18 +325,6 @@ open class FenixApplication : Application(), Provider, ThemeProvider {
         // Note: The A-C / Fenix crash service processes are responsible for their own setup and
         //       should minimize their dependencies to avoid also crashing.
         runOnlyInMainProcess {
-            // Iceraven fork: Google AdMob (test IDs). Fail-safe inside.
-            // MUST stay inside runOnlyInMainProcess: initializeFenixProcess runs in
-            // every process (Gecko child processes, crash reporter, ...). Calling
-            // MobileAds.initialize there crashed startup on run #7 — the app showed
-            // "Iceraven 需要重新启动" immediately on launch.
-            // Iceraven fork: Google AdMob (test IDs). Fail-safe inside.
-            // Manual init only, main process only. The SDK's auto-init provider
-            // stays removed in the manifest (#9 proved AdMob crashes startup;
-            // the stub was also missing isLimitAdTrackingEnabled(), fixed now).
-            GoogleSdk.initialize(this)
-            AdsManager.install(this)
-
             // Start loading the SharedPreferences file from disk on a background thread immediately.
             applicationScope.launch(IO) {
                 applicationContext.getSharedPreferences(Settings.FENIX_PREFERENCES, MODE_PRIVATE)

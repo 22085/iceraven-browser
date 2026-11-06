@@ -2697,7 +2697,7 @@ class Settings(
     var enableHomepageSearchBar by
         booleanPreference(
             key = appContext.getPreferenceKey(R.string.pref_key_enable_homepage_searchbar2),
-            default = false,
+            default = true,
         )
 
     /** Indicates if the Mozilla Ads Client for Sponsored Stories is enabled. */

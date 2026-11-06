@@ -573,11 +573,6 @@ class SettingsFragment : PreferenceFragmentCompat(), SystemInsetsPaddedFragment 
                     SettingsFragmentDirections.actionSettingsFragmentToSyncDebugFragment()
                 }
 
-                resources.getString(R.string.pref_key_news_feed) -> {
-                    startActivity(Intent(requireContext(), org.mozilla.fenix.news.NewsFeedActivity::class.java))
-                    null
-                }
-
                 resources.getString(R.string.pref_key_ai_search) -> {
                     startActivity(Intent(requireContext(), org.mozilla.fenix.aisearch.AiSearchActivity::class.java))
                     null

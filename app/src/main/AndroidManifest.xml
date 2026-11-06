@@ -93,10 +93,6 @@
             android:authorities="${applicationId}.mobileadsinitprovider"
             tools:node="remove" />
 
-        <meta-data
-            android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-3940256099942544~3347511713" />
-
         <!--
           We inherited this entry (${applicationId}.App) from Fennec. We need to keep this as our
           main launcher to avoid launcher icons on the home screen disappearing for all our users.
@@ -957,10 +953,6 @@
             android:name=".aisearch.AiSearchActivity"
             android:exported="false"
             android:label="AI 搜索" />
-        <activity
-            android:name=".news.NewsFeedActivity"
-            android:exported="false"
-            android:label="新闻资讯" />
     </application>
 
 </manifest>
