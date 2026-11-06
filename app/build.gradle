@@ -626,8 +626,11 @@ dependencies {
     // otherwise R8 fails with "Type AdvertisingIdClient$Info is defined multiple times".
     // NOTE: do NOT use implementation(libs.play.services.ads) { exclude(...) } here — the
     // version-catalog accessor is read-only in Groovy and run #5 failed configuring :app
-    // with "Cannot set the value of read-only property 'group'". Use coordinates instead.
-    implementation("com.google.android.gms:play-services-ads:${libs.versions.play.services.ads.get()}") {
+    // with "Cannot set the value of read-only property 'group'". And do NOT use
+    // libs.versions.play.services.ads.get() either — it resolves to a version-accessor
+    // group (prefix of play-services-ads-id) with no get() method, which failed run #6.
+    // Hardcode the version here; it must match play-services-ads in gradle/libs.versions.toml.
+    implementation("com.google.android.gms:play-services-ads:25.5.0") {
         exclude group: "com.google.android.gms", module: "play-services-ads-identifier"
     }
     implementation libs.bouncycastle.bcprov
