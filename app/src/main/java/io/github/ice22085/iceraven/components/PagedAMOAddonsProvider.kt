@@ -2,7 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-package io.github.22085.iceraven.components
+package io.github.ice22085.iceraven.components
 
 import android.content.Context
 import android.graphics.Bitmap

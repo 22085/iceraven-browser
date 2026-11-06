@@ -11,7 +11,7 @@ import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.app.NotificationManagerCompat
 import com.google.android.play.core.review.ReviewManagerFactory
-import io.github.22085.iceraven.components.PagedAMOAddonsProvider
+import io.github.ice22085.iceraven.components.PagedAMOAddonsProvider
 import java.util.concurrent.TimeUnit
 import kotlinx.coroutines.CoroutineScope
 import mozilla.components.concept.ai.controls.AIFeatureBlock

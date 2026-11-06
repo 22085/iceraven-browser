@@ -46,7 +46,7 @@ android {
             arg("room.schemaLocation", "$projectDir/schemas".toString())
         }
 
-        applicationId "io.github.22085"
+        applicationId "io.github.ice22085"
         minSdk config.minSdkVersion
         targetSdk config.targetSdkVersion
         versionCode 1
@@ -167,7 +167,7 @@ android {
             def deepLinkSchemeValue = "iceraven-debug"
             buildConfigField "String", "DEEP_LINK_SCHEME", "\"$deepLinkSchemeValue\""
             manifestPlaceholders.putAll([
-                    "sharedUserId": "io.github.22085.iceraven.sharedID",
+                    "sharedUserId": "io.github.ice22085.iceraven.sharedID",
                     "deepLinkScheme": deepLinkSchemeValue,
             ])
             // Use custom default allowed addon list
@@ -182,7 +182,7 @@ android {
             def deepLinkSchemeValue = "iceraven"
             buildConfigField "String", "DEEP_LINK_SCHEME", "\"$deepLinkSchemeValue\""
             manifestPlaceholders.putAll([
-                    "sharedUserId": "io.github.22085.iceraven.sharedID",
+                    "sharedUserId": "io.github.ice22085.iceraven.sharedID",
                     "deepLinkScheme": deepLinkSchemeValue,
             ])
             // Use custom default allowed addon list
