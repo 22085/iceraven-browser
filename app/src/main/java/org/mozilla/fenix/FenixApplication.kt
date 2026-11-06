@@ -228,10 +228,6 @@ open class FenixApplication : Application(), Provider, ThemeProvider {
         // content providers from Fenix and its libraries have run their initializers already.
         val start = SystemClock.elapsedRealtimeNanos()
 
-        // Iceraven fork: Google AdMob (test IDs). Fail-safe inside.
-        GoogleSdk.initialize(this)
-        AdsManager.install(this)
-
         // Capture A-C logs to Android logcat. Note that gecko maybe directly post to logcat
         // regardless of what we do here.
         Log.addSink(FenixLogSink(logsDebug = Config.channel.isDebug, AndroidLogSink()))
@@ -264,6 +260,14 @@ open class FenixApplication : Application(), Provider, ThemeProvider {
         // Note: The A-C / Fenix crash service processes are responsible for their own setup and
         //       should minimize their dependencies to avoid also crashing.
         runOnlyInMainProcess {
+            // Iceraven fork: Google AdMob (test IDs). Fail-safe inside.
+            // MUST stay inside runOnlyInMainProcess: initializeFenixProcess runs in
+            // every process (Gecko child processes, crash reporter, ...). Calling
+            // MobileAds.initialize there crashed startup on run #7 — the app showed
+            // "Iceraven 需要重新启动" immediately on launch.
+            GoogleSdk.initialize(this)
+            AdsManager.install(this)
+
             // Start loading the SharedPreferences file from disk on a background thread immediately.
             applicationScope.launch(IO) {
                 applicationContext.getSharedPreferences(Settings.FENIX_PREFERENCES, MODE_PRIVATE)
