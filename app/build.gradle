@@ -621,7 +621,12 @@ dependencies {
     implementation libs.androidx.annotation
     implementation libs.androidx.appcompat
     implementation libs.androidx.biometric
-    implementation libs.play.services.ads
+    // Fenix vendors its own stub AdvertisingIdClient (app/src/main/java/com/google/android/gms/ads/identifier/),
+    // so the real play-services-ads-identifier bundled with play-services-ads must be excluded,
+    // otherwise R8 fails with "Type AdvertisingIdClient$Info is defined multiple times".
+    implementation(libs.play.services.ads) {
+        exclude(group = "com.google.android.gms", module = "play-services-ads-identifier")
+    }
     implementation libs.bouncycastle.bcprov
     implementation libs.bouncycastle.bcpkix
     implementation platform(libs.androidx.compose.bom)
