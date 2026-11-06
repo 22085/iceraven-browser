@@ -30,6 +30,7 @@ import org.mozilla.fenix.HomeActivity
 import org.mozilla.fenix.ads.GoogleSdk
 import org.mozilla.fenix.ads.buildCompactNativeAdView
 import org.mozilla.fenix.compose.home.HomeSectionHeader
+import org.mozilla.fenix.ext.components
 import org.mozilla.fenix.news.NewsFeedActivity
 import org.mozilla.fenix.news.NewsRepository
 
@@ -78,11 +79,16 @@ fun HomeNewsSection() {
                 modifier = Modifier
                     .fillMaxWidth()
                     .clickable {
-                        (context as? HomeActivity)?.openToBrowserAndLoad(
-                            searchTermOrURL = item.link,
-                            newTab = true,
-                            from = BrowserDirection.FromHome,
-                        )
+                        // openToBrowserAndLoad is deprecated and -Werror turns the
+                        // warning into a build error; use openToBrowser +
+                        // loadUrlOrSearch instead (the recommended replacement).
+                        (context as? HomeActivity)?.let { homeActivity ->
+                            homeActivity.openToBrowser(BrowserDirection.FromHome)
+                            context.components.useCases.fenixBrowserUseCases.loadUrlOrSearch(
+                                searchTermOrURL = item.link,
+                                newTab = true,
+                            )
+                        }
                     }
                     .padding(vertical = 10.dp),
             ) {
