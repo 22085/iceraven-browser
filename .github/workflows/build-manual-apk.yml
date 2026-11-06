@@ -68,7 +68,16 @@ jobs:
       - name: Verify APK signature
         run: |
           ls gradle/build/app/outputs/apk/forkRelease/
-          for apk in gradle/build/app/outputs/apk/forkRelease/*.apk; do echo "== $apk"; $ANDROID_HOME/build-tools/*/apksigner verify --print-certs "$apk" 2>/dev/null || apksigner verify --print-certs "$apk"; done
+          APKSIGNER=$(find "$HOME/android-sdk" "$ANDROID_HOME" "$ANDROID_SDK_ROOT" /usr/local/lib/android /opt/android-sdk -path "*/build-tools/*/apksigner" -type f 2>/dev/null | head -n 1)
+          if [ -z "$APKSIGNER" ]; then
+            echo "apksigner not found, installing build-tools via sdkmanager"
+            SDK="$HOME/android-sdk/android-sdk-linux"
+            "$SDK/cmdline-tools/tools/bin/sdkmanager" "build-tools;35.0.0"
+            APKSIGNER=$(find "$SDK" -path "*/build-tools/*/apksigner" -type f 2>/dev/null | head -n 1)
+          fi
+          echo "apksigner: $APKSIGNER"
+          test -n "$APKSIGNER"
+          for apk in gradle/build/app/outputs/apk/forkRelease/app-arm64-v8a-forkRelease.apk gradle/build/app/outputs/apk/forkRelease/app-armeabi-v7a-forkRelease.apk gradle/build/app/outputs/apk/forkRelease/app-x86_64-forkRelease.apk; do echo "== $apk"; "$APKSIGNER" verify --print-certs "$apk"; done
 
       - name: Upload arm64 apk
         uses: actions/upload-artifact@v7
