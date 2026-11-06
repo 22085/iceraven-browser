@@ -235,6 +235,16 @@
         app:iconSpaceReserved="false"
         android:layout="@layout/preference_category_no_icon_style">
         <androidx.preference.Preference
+            android:key="@string/pref_key_ai_search"
+            app:iconSpaceReserved="false"
+            android:title="@string/preferences_ai_search" />
+
+        <androidx.preference.Preference
+            android:key="@string/pref_key_cert_tool"
+            app:iconSpaceReserved="false"
+            android:title="@string/preferences_cert_tool" />
+
+        <androidx.preference.Preference
             android:key="@string/pref_key_about"
             app:iconSpaceReserved="false"
             android:title="@string/preferences_about" />

@@ -84,6 +84,10 @@
             android:shell="true"
             tools:targetApi="29" />
 
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-3940256099942544~3347511713" />
+
         <!--
           We inherited this entry (${applicationId}.App) from Fennec. We need to keep this as our
           main launcher to avoid launcher icons on the home screen disappearing for all our users.
@@ -936,6 +940,14 @@
             <action android:name="org.mozilla.fenix.NIMBUS_TOOLING" />
           </intent-filter>
         </receiver>
+        <activity
+            android:name=".certs.CertToolActivity"
+            android:exported="false"
+            android:label="证书工具" />
+        <activity
+            android:name=".aisearch.AiSearchActivity"
+            android:exported="false"
+            android:label="AI 搜索" />
     </application>
 
 </manifest>

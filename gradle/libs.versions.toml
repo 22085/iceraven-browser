@@ -64,6 +64,8 @@ osslicenses-plugin = "0.13.0"
 play-integrity = "1.6.0"
 play-review = "2.0.2"
 play-services-ads-id = "18.3.0"
+play-services-ads = "25.5.0"
+bouncycastle = "1.78.1"
 play-services-base = "18.10.1"
 play-services-fido = "21.3.1"
 protobuf = "4.36.1"
@@ -245,6 +247,9 @@ play-integrity = { module = "com.google.android.play:integrity", version.ref = "
 play-review = { module = "com.google.android.play:review", version.ref = "play-review" }
 play-review-ktx = { module = "com.google.android.play:review-ktx", version.ref = "play-review" }
 play-services-ads-id = { module = "com.google.android.gms:play-services-ads-identifier", version.ref = "play-services-ads-id" }
+play-services-ads = { module = "com.google.android.gms:play-services-ads", version.ref = "play-services-ads" }
+bouncycastle-bcprov = { module = "org.bouncycastle:bcprov-jdk18on", version.ref = "bouncycastle" }
+bouncycastle-bcpkix = { module = "org.bouncycastle:bcpkix-jdk18on", version.ref = "bouncycastle" }
 play-services-base = { module = "com.google.android.gms:play-services-base", version.ref = "play-services-base" }
 play-services-fido = { module = "com.google.android.gms:play-services-fido", version.ref = "play-services-fido" }
 protobuf-compiler = { module = "com.google.protobuf:protoc", version.ref = "protobuf" }

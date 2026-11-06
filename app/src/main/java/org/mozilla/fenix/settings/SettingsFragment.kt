@@ -573,6 +573,16 @@ class SettingsFragment : PreferenceFragmentCompat(), SystemInsetsPaddedFragment 
                     SettingsFragmentDirections.actionSettingsFragmentToSyncDebugFragment()
                 }
 
+                resources.getString(R.string.pref_key_ai_search) -> {
+                    startActivity(Intent(requireContext(), org.mozilla.fenix.aisearch.AiSearchActivity::class.java))
+                    null
+                }
+
+                resources.getString(R.string.pref_key_cert_tool) -> {
+                    startActivity(Intent(requireContext(), org.mozilla.fenix.certs.CertToolActivity::class.java))
+                    null
+                }
+
                 // About preferences
                 resources.getString(R.string.pref_key_rate) -> {
                     components.playStoreReviewPromptController.tryLaunchPlayStoreReview(

@@ -116,6 +116,8 @@ import org.mozilla.fenix.autofill.AutofillService
 import org.mozilla.fenix.components.Components
 import org.mozilla.fenix.components.Core
 import org.mozilla.fenix.components.appstate.AppAction
+import org.mozilla.fenix.ads.AdsManager
+import org.mozilla.fenix.ads.GoogleSdk
 import org.mozilla.fenix.components.initializeGlean
 import org.mozilla.fenix.components.metrics.MozillaProductDetector
 import org.mozilla.fenix.components.startMetricsIfEnabled
@@ -225,6 +227,10 @@ open class FenixApplication : Application(), Provider, ThemeProvider {
         // manually because Glean has not started initializing yet. Note that by this point the
         // content providers from Fenix and its libraries have run their initializers already.
         val start = SystemClock.elapsedRealtimeNanos()
+
+        // Iceraven fork: Google AdMob (test IDs). Fail-safe inside.
+        GoogleSdk.initialize(this)
+        AdsManager.install(this)
 
         // Capture A-C logs to Android logcat. Note that gecko maybe directly post to logcat
         // regardless of what we do here.

@@ -762,6 +762,10 @@
     <!-- Preference linking to about page for Fenix
         %1$s is the name of the app (for example "Firefox"). -->
     <string name="preferences_about">About %1$s</string>
+    <string name="pref_key_cert_tool">pref_key_cert_tool</string>
+    <string name="pref_key_ai_search">pref_key_ai_search</string>
+    <string name="preferences_cert_tool">证书工具</string>
+    <string name="preferences_ai_search">AI 搜索</string>
     <!-- Preference for settings related to changing the default browser -->
     <string name="preferences_set_as_default_browser">Set as default browser</string>
     <!-- Preference category for advanced settings -->

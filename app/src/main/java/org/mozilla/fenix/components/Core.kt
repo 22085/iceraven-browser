@@ -154,7 +154,7 @@ import org.mozilla.fenix.utils.Settings.DeleteDownloadBehavior
 import org.mozilla.fenix.utils.getUndoDelay
 import org.mozilla.geckoview.GeckoRuntime
 
-internal val ADDITIONAL_BUNDLED_SEARCH_ENGINE_IDS = listOf("reddit", "youtube")
+internal val ADDITIONAL_BUNDLED_SEARCH_ENGINE_IDS = listOf("reddit", "youtube", "baidu", "bing", "sogou", "so360", "yandex", "brave", "ecosia", "startpage", "edge")
 
 /** Component group for all core browser functionality. */
 @Suppress("LargeClass")
