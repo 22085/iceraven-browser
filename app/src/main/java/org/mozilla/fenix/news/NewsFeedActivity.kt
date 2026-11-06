@@ -6,7 +6,13 @@ package org.mozilla.fenix.news
 
 import android.content.Intent
 import android.net.Uri
+import android.graphics.Typeface
 import android.os.Bundle
+import android.util.TypedValue
+import android.view.Gravity
+import android.widget.ImageView
+import com.google.android.gms.ads.nativead.NativeAdView
+import org.mozilla.fenix.ads.GoogleSdk
 import android.util.Xml
 import android.view.ViewGroup
 import android.widget.Button
@@ -116,12 +122,82 @@ class NewsFeedActivity : AppCompatActivity() {
                     statusView.text = "$name：没拉到内容，请检查网络后点刷新重试。"
                 } else {
                     statusView.text = "$name · ${items.size} 条"
-                    items.forEach { item ->
+                    items.forEachIndexed { index, item ->
                         listView.addView(buildItemView(item))
+                        // In-feed native ad every 5 items; loads independently
+                        // and stays hidden on failure, so it never leaves a gap.
+                        if ((index + 1) % 5 == 0) {
+                            insertNativeAdSlot()
+                        }
                     }
                 }
             }
         }
+    }
+
+    private fun insertNativeAdSlot() {
+        val nativeAdView = buildCompactNativeView().apply {
+            visibility = android.view.View.GONE
+        }
+        listView.addView(nativeAdView)
+        try {
+            GoogleSdk.loadNative(this) { ad ->
+                if (ad != null) {
+                    GoogleSdk.bindNativeAd(ad, nativeAdView)
+                    nativeAdView.visibility = android.view.View.VISIBLE
+                }
+            }
+        } catch (e: Exception) {
+            // Ad stays hidden; the feed is unaffected.
+        }
+    }
+
+    private fun buildCompactNativeView(): NativeAdView {
+        val nativeAdView = NativeAdView(this).apply {
+            layoutParams = LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+            )
+        }
+        val row = LinearLayout(this).apply {
+            orientation = LinearLayout.HORIZONTAL
+            gravity = Gravity.CENTER_VERTICAL
+            setPadding(dp(12), dp(8), dp(12), dp(8))
+        }
+        val iconView = ImageView(this).apply {
+            layoutParams = LinearLayout.LayoutParams(dp(40), dp(40))
+        }
+        val textColumn = LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+            layoutParams = LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f).apply {
+                marginStart = dp(8)
+                marginEnd = dp(8)
+            }
+        }
+        val headlineView = TextView(this).apply {
+            setTypeface(typeface, Typeface.BOLD)
+            setTextSize(TypedValue.COMPLEX_UNIT_SP, 14f)
+            maxLines = 1
+        }
+        val bodyView = TextView(this).apply {
+            setTextSize(TypedValue.COMPLEX_UNIT_SP, 12f)
+            maxLines = 1
+        }
+        textColumn.addView(headlineView)
+        textColumn.addView(bodyView)
+        val ctaView = TextView(this).apply {
+            setTextSize(TypedValue.COMPLEX_UNIT_SP, 12f)
+            setTypeface(typeface, Typeface.BOLD)
+        }
+        row.addView(iconView)
+        row.addView(textColumn)
+        row.addView(ctaView)
+        nativeAdView.addView(row)
+        nativeAdView.iconView = iconView
+        nativeAdView.headlineView = headlineView
+        nativeAdView.bodyView = bodyView
+        nativeAdView.callToActionView = ctaView
+        return nativeAdView
     }
 
     private fun buildItemView(item: NewsItem): TextView {
