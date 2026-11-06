@@ -25,6 +25,12 @@ public class AdvertisingIdClient {
         public String getId() {
             return mId;
         }
+
+        // Iceraven fork: the real Info has this method and the AdMob SDK
+        // calls it. Without it the SDK dies with NoSuchMethodError.
+        public boolean isLimitAdTrackingEnabled() {
+            return false;
+        }
         
         public String toString() {
             return mId;
