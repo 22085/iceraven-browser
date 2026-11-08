@@ -2696,7 +2696,11 @@ class Settings(
     /** Indicates if the Homepage Search Bar is enabled. */
     var enableHomepageSearchBar by
         booleanPreference(
-            key = appContext.getPreferenceKey(R.string.pref_key_enable_homepage_searchbar2),
+            // NOTE: key bumped from ...searchbar2 to ...searchbar3 on 2026-11-08.
+            // The #15 default flip (false -> true) had no effect on existing
+            // installs because the old key was already stored as false;
+            // a new key makes existing installs pick up the new default.
+            key = appContext.getPreferenceKey(R.string.pref_key_enable_homepage_searchbar3),
             default = true,
         )
 
